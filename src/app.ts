@@ -45,7 +45,7 @@ class ProjectInput {
 	}
 	
 // 	Attach template to host
-	private attach() = () => { 
+	private attach = () => { 
 		this.hostElement.insertAdjacentElement("afterbegin", this.element);
 	}
 }
