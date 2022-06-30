@@ -1,4 +1,23 @@
+// Autobind decorator
 
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor){
+	
+// 	Storing originl method
+	const originalMethod = descriptor.value;
+	const adjustedDescriptor: PropertyDescriptor = {
+		configurable: true,
+		get(){
+			const boundFn = originalMethod.bind(this);
+			return boundFn
+		}
+	}
+	return adjustedDescriptor;
+}
+
+
+
+
+// Project Input Class
 class ProjectInput {
 	
 	templateElement: HTMLTemplateElement;
@@ -25,27 +44,45 @@ class ProjectInput {
 		this.attach();
 	}
 	
-		// Submit handler logic
-	// private submitHandler(event: Event){
-	// 	event.preventDefault();
+	private gatherUserInput(): [string, string, number] | void {
 		
-	// 	console.log(this.titleInputElement.value);
-	// }
+		const enteredTitle = this.titleInputElement.value;
+		const enteredDescription = this.descriptionInputElement.value;
+		const enteredPeople = this.peopleInputElement.value;
+		
+		if(enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredPeople.trim().length === 0 ){
+			alert("Invalid Input. Please try again!");
+			return;
+		}else{
+			return [enteredTitle, enteredDescription, +enteredPeople]	
+		}
+		
+	}
 	
-	private submitHandler = (event : Event) => {
+	@Autobind
+	private submitHandler(event : Event) {
 		event.preventDefault();
 		
-		console.log(this.titleInputElement.value);
+		const userInput = this.gatherUserInput();
+		
+		if(Array.isArray(userInput)){
+			const [title, description, people] = userInput;
+			console.log(title, description, people)
+		}
+		
+		
+		
+		
 	}
 
 
 // 	Using bind(this) to make the this keyword in the submitHandler refer to the Class
-	private configure = () => {
+	private configure() {
 		this.element.addEventListener("submit", this.submitHandler);
 	}
 	
 // 	Attach template to host
-	private attach() = () => { 
+	private attach() { 
 		this.hostElement.insertAdjacentElement("afterbegin", this.element);
 	}
 }
