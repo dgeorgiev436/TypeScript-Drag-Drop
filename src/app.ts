@@ -61,7 +61,6 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
 
 // Project Input Class
 class ProjectInput {
-  templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLFormElement;
   titleInputElement: HTMLInputElement;
@@ -69,18 +68,9 @@ class ProjectInput {
   peopleInputElement: HTMLInputElement;
 
   constructor() {
-    // 		Get elements by ID
-    this.templateElement = document.getElementById(
-      "project-input"
-    )! as HTMLTemplateElement;
     this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
-    const importedNode = document.importNode(
-      this.templateElement.content,
-      true
-    );
-    this.element = importedNode.firstElementChild as HTMLFormElement;
-    this.element.id = "user-input";
+    this.element = document.querySelector("#user_input") as HTMLFormElement;
 
     this.titleInputElement = document.querySelector(
       "#title"
