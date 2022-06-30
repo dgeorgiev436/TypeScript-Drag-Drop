@@ -10,32 +10,38 @@
   </head>
   <body>
     <div id="app">
-      <form id="user_input">
-        <div class="form-control">
-          <label for="title">Title</label>
-          <input type="text" id="title"/>
-        </div>
-        <div class="form-control">
-          <label for="description">Description</label>
-          <textarea id="description" rows="3"></textarea>
-        </div>
-        <div class="form-control">
-          <label for="people">People</label>
-          <input type="number" id="people" step="1" min="0" max="10" />
-        </div>
-        <button type="submit">ADD PROJECT</button>
-      </form>
-    </template>
-    <template id="single-project">
-      <li></li>
-    </template>
-    <template id="project-list">
-      <section class="projects">
-        <header>
-          <h2></h2>
-        </header>
-        <ul></ul>
-      </section>
+        <form id="user_input">
+          <div class="form-control">
+            <label for="title">Title</label>
+            <input type="text" id="title"/>
+          </div>
+          <div class="form-control">
+            <label for="description">Description</label>
+            <textarea id="description" rows="3"></textarea>
+          </div>
+          <div class="form-control">
+            <label for="people">People</label>
+            <input type="number" id="people" step="1" min="0" max="10" />
+          </div>
+          <button type="submit">ADD PROJECT</button>
+        </form>
+      <div id="single-project">
+        <li></li>
+      </div>
+      <div id="project-list">
+        <section class="projects" id="active-projects-list">
+          <header>
+            <h2>Active Projects</h2>
+          </header>
+          <ul id="active-projects-list"></ul>
+        </section>
+        <section class="projects" id="finished-projects-list">
+          <header>
+            <h2>Finished Projects</h2>
+          </header>
+          <ul id="finished-projects-list"></ul>
+        </section>
+      </div>
     </div>
   </body>
 </html>

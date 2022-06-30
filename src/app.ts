@@ -59,7 +59,26 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   return adjustedDescriptor;
 }
 
-// Project Input Class
+// *********************************** ProjectList Class ***********************************
+class ProjectList {
+  hostElement: HTMLDivElement;
+  activeSection: HTMLElement;
+  finishedSection: HTMLElement;
+
+  constructor() {
+    this.hostElement = document.getElementById(
+      "project-list"
+    )! as HTMLDivElement;
+    this.activeSection = document.getElementById(
+      "active-projects-list"
+    )! as HTMLElement;
+    this.finishedSection = document.getElementById(
+      "finished-projects-list"
+    )! as HTMLElement;
+  }
+}
+
+// *********************************** ProjectInput Class ***********************************
 class ProjectInput {
   hostElement: HTMLDivElement;
   element: HTMLFormElement;
@@ -83,7 +102,6 @@ class ProjectInput {
     )! as HTMLInputElement;
 
     this.configure();
-    this.attach();
   }
 
   private gatherUserInput(): [string, string, number] | void {
@@ -91,7 +109,7 @@ class ProjectInput {
     const enteredDescription = this.descriptionInputElement.value;
     const enteredPeople = this.peopleInputElement.value;
 
-    // Using Validatable interface for validation
+    // Using the Validatable interface to validate input
     const titleValidatable: Validatable = {
       value: enteredTitle,
       required: true,
@@ -145,11 +163,9 @@ class ProjectInput {
   private configure() {
     this.element.addEventListener("submit", this.submitHandler);
   }
-
-  // 	Attach template to host
-  private attach() {
-    this.hostElement.insertAdjacentElement("afterbegin", this.element);
-  }
 }
 
 const prjInput = new ProjectInput();
+
+const activePrjList = new ProjectList();
+const finishedPrjList = new ProjectList();
