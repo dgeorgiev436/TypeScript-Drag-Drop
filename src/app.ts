@@ -1,8 +1,25 @@
-// Project State Management Class
+// Project Type and enum ProjectStatus 
+enum ProjectStatus {
+  Active,
+  Finished,
+}
 
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
+type Listener = (items: Project[]) => void
+
+// Project State Management Class
 class ProjectState {
-  private listeners: any[] = [];
-  private projects: any[] = [];
+  private listeners: Listener[] = [];
+  private projects: Project[] = [];
   //   Guarantees only one object of the type
   private static instance: ProjectState;
 
@@ -17,24 +34,25 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenerFunction: Function){
-	this.listeners.push(listenerFunction);
+  addListener(listenerFunction: Listener) {
+    this.listeners.push(listenerFunction);
   }
 
   addProject(title: string, description: string, numPeople: number) {
     // Create new user input object
-    const newProject = {
-      id: Math.random().toString(),
-      title: title,
-      description: description,
-      people: numPeople,
-    };
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      numPeople,
+      ProjectStatus.Active
+    );
     // Add to the array
     this.projects.push(newProject);
 
-	for (const listenerFn of this.listeners){
-		listenerFn(this.projects.slice());
-	}
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());
+    }
   }
 }
 
@@ -107,10 +125,10 @@ class ProjectList {
   hostElement: HTMLDivElement;
   activeSection: HTMLElement;
   finishedSection: HTMLElement;
-  assignedProjects: any[];
+  assignedProjects: Project[];
 
   constructor() {
-	this.assignedProjects = [];
+    this.assignedProjects = [];
     this.hostElement = document.getElementById(
       "project-list"
     )! as HTMLDivElement;
@@ -121,21 +139,20 @@ class ProjectList {
       "finished-projects-list"
     )! as HTMLElement;
 
-	projectState.addListener((projects: any[]) => {
-		this.assignedProjects = projects;
-		this.renderProjects();
-	});
+    projectState.addListener((projects: Project[]) => {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    });
   }
 
-  private renderProjects(){
-	const listEl = this.activeSection! as HTMLUListElement;
-	for(const prjItem of this.assignedProjects){
-		const newListItem = document.createElement("li");
-		newListItem.textContent = prjItem.title;
-		listEl.appendChild(newListItem)
-	}
+  private renderProjects() {
+    const listEl = this.activeSection! as HTMLUListElement;
+    for (const prjItem of this.assignedProjects) {
+      const newListItem = document.createElement("li");
+      newListItem.textContent = prjItem.title;
+      listEl.appendChild(newListItem);
+    }
   }
-  
 }
 
 // *********************************** ProjectInput Class ***********************************
