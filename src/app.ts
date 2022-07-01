@@ -14,16 +14,28 @@ class Project {
   ) {}
 }
 
-type Listener = (items: Project[]) => void;
+type Listener<T> = (items: T[]) => void;
 
-// Project State Management Class
-class ProjectState {
-  private listeners: Listener[] = [];
+// *********************************** State Class ***********************************
+class State<T> {
+  protected listeners: Listener<T>[] = [];
+
+  addListener(listenerFunction: Listener<T>) {
+    this.listeners.push(listenerFunction);
+  }
+}
+
+
+
+// *********************************** Project State Management Class ***********************************
+class ProjectState extends State<Project> {
   private projects: Project[] = [];
   //   Guarantees only one object of the type
   private static instance: ProjectState;
 
-  private constructor() {}
+  private constructor() {
+    super();
+  }
 
   //   Guarantees only one object of the type
   static getInstance() {
@@ -34,9 +46,7 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenerFunction: Listener) {
-    this.listeners.push(listenerFunction);
-  }
+ 
 
   addProject(title: string, description: string, numPeople: number) {
     // Create new user input object
@@ -129,6 +139,12 @@ abstract class Component<T extends HTMLElement> {
     this.hostElement = document.getElementById(hostElementId)! as T;
   }
 }
+
+// *********************************** ProjectItem Class ***********************************
+
+// class ProjectItem extends Component<HTMLDivElement> {
+
+// }
 
 // *********************************** ProjectList Class ***********************************
 class ProjectList extends Component<HTMLDivElement> {
