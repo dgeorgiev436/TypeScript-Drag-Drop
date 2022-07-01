@@ -1,4 +1,4 @@
-// Project Type and enum ProjectStatus 
+// Project Type and enum ProjectStatus
 enum ProjectStatus {
   Active,
   Finished,
@@ -14,7 +14,7 @@ class Project {
   ) {}
 }
 
-type Listener = (items: Project[]) => void
+type Listener = (items: Project[]) => void;
 
 // Project State Management Class
 class ProjectState {
@@ -120,18 +120,25 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   return adjustedDescriptor;
 }
 
+// *********************************** Component Base Class ***********************************
+
+abstract class Component<T extends HTMLElement> {
+  hostElement: T;
+
+  constructor(hostElementId: string) {
+    this.hostElement = document.getElementById(hostElementId)! as T;
+  }
+}
+
 // *********************************** ProjectList Class ***********************************
-class ProjectList {
-  hostElement: HTMLDivElement;
+class ProjectList extends Component<HTMLDivElement> {
   activeSection: HTMLElement;
   finishedSection: HTMLElement;
   assignedProjects: Project[];
 
   constructor() {
+    super("project-list");
     this.assignedProjects = [];
-    this.hostElement = document.getElementById(
-      "project-list"
-    )! as HTMLDivElement;
     this.activeSection = document.getElementById(
       "active-projects-list"
     )! as HTMLElement;
@@ -147,6 +154,7 @@ class ProjectList {
 
   private renderProjects() {
     const listEl = this.activeSection! as HTMLUListElement;
+    listEl.innerHTML = "";
     for (const prjItem of this.assignedProjects) {
       const newListItem = document.createElement("li");
       newListItem.textContent = prjItem.title;
@@ -156,16 +164,14 @@ class ProjectList {
 }
 
 // *********************************** ProjectInput Class ***********************************
-class ProjectInput {
-  hostElement: HTMLDivElement;
+class ProjectInput extends Component<HTMLDivElement> {
   element: HTMLFormElement;
   titleInputElement: HTMLInputElement;
   descriptionInputElement: HTMLInputElement;
   peopleInputElement: HTMLInputElement;
 
   constructor() {
-    this.hostElement = document.getElementById("app")! as HTMLDivElement;
-
+    super("app");
     this.element = document.querySelector("#user_input") as HTMLFormElement;
 
     this.titleInputElement = document.querySelector(
